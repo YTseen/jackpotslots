@@ -372,43 +372,51 @@ const picks = shuffledGames.slice(0, 3);
       return block;
     }
     function pullHandle() {
-      const btn = document.getElementById("spin-btn");
-      btn.disabled = true;
-      btn.style.filter = "brightness(0.83)";
-      playSound('reel-audio');
-      const picks = reels.map(() => gamePool[Math.floor(Math.random() * gamePool.length)]);
-      reels.forEach((id, index) => {
-        const reel = document.getElementById(id);
-        reel.innerHTML = "";
-        const content = createScrollContent(picks[index]);
-        reel.appendChild(content);
-        content.style.animation = `scroll 2s cubic-bezier(.35,.12,.49,1.17) ${index * 0.5}s forwards`;
-      });
+  const btn = document.getElementById("spin-btn");
+  btn.disabled = true;
+  btn.style.filter = "brightness(0.83)";
+  playSound('reel-audio');
+
+  // Get 3 unique, shuffled game names
+  let shuffledGames = gamePool.slice().sort(() => Math.random() - 0.5);
+  const picks = shuffledGames.slice(0, 3);
+
+  // Pick ONE winner index
+  const winnerIndex = Math.floor(Math.random() * 3);
+
+  reels.forEach((id, index) => {
+    const reel = document.getElementById(id);
+    reel.innerHTML = "";
+    // Pass the correct pick to each reel (this is the 'stopped' value)
+    const content = createScrollContent(picks[index]);
+    reel.appendChild(content);
+    content.style.animation = `scroll 2s cubic-bezier(.35,.12,.49,1.17) ${index * 0.5}s forwards`;
+  });
+
+  setTimeout(() => {
+    // Skulls animate before winner
+    reels.forEach((id, i) => {
+      if (i !== winnerIndex) {
+        setTimeout(() => playSound('skull-audio', true), i * 200 + 10);
+        const skull = document.createElement("div");
+        skull.className = "skull";
+        document.getElementById(id).appendChild(skull);
+      }
+    });
+    // Winner reveal
+    setTimeout(() => {
+      playSound('winner-audio');
+      document.getElementById("winner-name").innerText = picks[winnerIndex];
+      document.getElementById("winner-screen").style.display = "flex";
       setTimeout(() => {
-        // Skulls animate before winner
-        const winnerIndex = Math.floor(Math.random() * 3);
-        reels.forEach((id, i) => {
-          if (i !== winnerIndex) {
-            setTimeout(() => playSound('skull-audio', true), i * 200 + 10);
-            const skull = document.createElement("div");
-            skull.className = "skull";
-            document.getElementById(id).appendChild(skull);
-          }
-        });
-        // Winner reveal
-        setTimeout(() => {
-          playSound('winner-audio');
-          document.getElementById("winner-name").innerText = picks[winnerIndex];
-          document.getElementById("winner-screen").style.display = "flex";
-          setTimeout(() => {
-            document.getElementById("winner-screen").style.display = "none";
-            btn.disabled = false;
-            btn.style.filter = "brightness(1)";
-            reels.forEach(id => document.getElementById(id).innerHTML = "");
-          }, 5200);
-        }, 1200);
-      }, 4200);
-    }
+        document.getElementById("winner-screen").style.display = "none";
+        btn.disabled = false;
+        btn.style.filter = "brightness(1)";
+        reels.forEach(id => document.getElementById(id).innerHTML = "");
+      }, 5200);
+    }, 1200);
+  }, 4200);
+}
   </script>
 </body>
 </html>
