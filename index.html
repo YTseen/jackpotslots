@@ -352,7 +352,8 @@ fetch("games.txt")
       const block = document.createElement("div");
       block.className = "reel-content";
       for (let i = 0; i < 8; i++) {
-        const name = gamePool[Math.floor(Math.random() * gamePool.length)];
+let shuffledGames = gamePool.slice().sort(() => Math.random() - 0.5);
+const picks = shuffledGames.slice(0, 3);
         const line = document.createElement("div");
         line.style.height = "98px";
         line.style.display = "flex";
