@@ -349,28 +349,28 @@ fetch("games.txt")
       } catch(e){}
     }
     function createScrollContent(winner) {
-      const block = document.createElement("div");
-      block.className = "reel-content";
-      for (let i = 0; i < 8; i++) {
-let shuffledGames = gamePool.slice().sort(() => Math.random() - 0.5);
-const picks = shuffledGames.slice(0, 3);
-        const line = document.createElement("div");
-        line.style.height = "98px";
-        line.style.display = "flex";
-        line.style.alignItems = "center";
-        line.style.justifyContent = "center";
-        line.innerText = name;
-        block.appendChild(line);
-      }
-      const final = document.createElement("div");
-      final.style.height = "98px";
-      final.style.display = "flex";
-      final.style.alignItems = "center";
-      final.style.justifyContent = "center";
-      final.innerText = winner;
-      block.appendChild(final);
-      return block;
-    }
+  const block = document.createElement("div");
+  block.className = "reel-content";
+  for (let i = 0; i < 8; i++) {
+    // Just random filler names for the animation
+    const name = gamePool[Math.floor(Math.random() * gamePool.length)];
+    const line = document.createElement("div");
+    line.style.height = "98px";
+    line.style.display = "flex";
+    line.style.alignItems = "center";
+    line.style.justifyContent = "center";
+    line.innerText = name;
+    block.appendChild(line);
+  }
+  const final = document.createElement("div");
+  final.style.height = "98px";
+  final.style.display = "flex";
+  final.style.alignItems = "center";
+  final.style.justifyContent = "center";
+  final.innerText = winner;
+  block.appendChild(final);
+  return block;
+}
     function pullHandle() {
   const btn = document.getElementById("spin-btn");
   btn.disabled = true;
