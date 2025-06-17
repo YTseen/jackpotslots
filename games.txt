@@ -1,7 +1,7 @@
 Splitgate 2
 The Long Dark
 RoboCop: Rogue City
-Warhammer 40,000: Space Marine - Anniversary Edition
+Warhammer 40,000: Space Marine 
 Little Lives
 Summer Memories
 Firewatch
@@ -10,18 +10,17 @@ A Way Out
 Metro Exodus
 Metro Last Light Redux
 Buckshot Roulette
-This War of Mine: Stories - Season Pass
-This War of Mine: The Little Ones
+This War of Mine
 One-armed robber
 Animal Rescuer
 ROUNDS
-Ancestors Legacy - Saladin's Conquest
+Ancestors Legacy
 In Silence
 Seven: Enhanced Edition
 Lethal Company
 Ryse: Son of Rome
-Assassin's Creed Origins - Standard Edition
-Titanfall® 2: Ultimate Edition
+Assassin's Creed Origins
+Titanfall® 2
 Strange Brigade
 Coromon
 TEKKEN 7
@@ -30,7 +29,7 @@ Quake Live
 That Which Gave Chase
 Oxygen Not Included
 Out of Space
-Kingdom Come: Deliverance Royal Edition
+Kingdom Come: Deliverance
 Biped
 Spirit Of The Island
 In Sound Mind
@@ -38,7 +37,7 @@ Radio Commander
 Atomicrops
 Shenmue 3
 Warhammer: Chaosbane
-Keep in Mind: Remastered
+Keep in Mind
 Jalopy
 Moon Hunters
 Day of Dragons
@@ -50,7 +49,7 @@ Left 4 Dead 2
 Tom Clancy's Rainbow Six Siege
 LEGO The Incredibles
 ASTRONEER
-The Elder Scrolls V: Skyrim Special Edition
+The Elder Scrolls V
 Gedonia
 ARK: Survival Evolved
 SKIPCHASER
@@ -84,17 +83,16 @@ FATE
 The Guild II
 Alien Breed: Impact
 Hyper Knights: Battles
-Elder Scrolls V: Skyrim Legendary Retail
-Riding Stables: Life with Horses M+T
+Riding Stables
 Regions Of Ruin
 AER
-Lords of the Fallen Game of the Year Edition 2014
+Lords of the Fallen
 LEGO DC Super-Villains
 LEGO Lord of the Rings
 LEGO - The Hobbit
 LEGO Jurassic World
 LEGO Marvel's Avengers
-LEGO® Pirates of the Caribbean The Video Game
+LEGO® Pirates
 Chariot
 Lara Croft GOL
 Ancestors Legacy
@@ -121,12 +119,11 @@ Five Nights at Freddy's
 Fable Anniversary
 Ceville
 Session: Skate Sim
-Warhammer 40,000: Dawn of War II - Retribution
+Warhammer 40,000: Dawn of War II
 The Witcher: Enhanced Edition (ROW)
 Jurassic World Evolution
 WALL E
-Warhammer 40,000: Dawn of War - Master Collection
-Warhammer 40,000: Dawn of War - Game of the Year Edition
+Warhammer 40,000: Dawn of War
 Castle Crashers
 Battleblock Theater
 FlatOut2
@@ -145,13 +142,14 @@ Tomb Raider 3
 Tomb Raider 2
 Tomb Raider 1
 Tomb Raider
-Rise of the Tomb Raider: 20 Year Celebration
+Rise of the Tomb Raider
 BioShock The Collection
 Fallout New Vegas Ultimate ROW
 Oblivion Game of the Year Deluxe
 Starbound
 American Truck Simulator
-Double Pack - Port Royale 3 Gold and Patrician IV Gold
+Port Royale 3 Gold
+Patrician IV Gold
 Port Royale 2
 Age of Empires II
 Reveal the Deep
@@ -161,7 +159,7 @@ Dead Age
 Dead Age 2
 Deus Ex™ GOTY Edition
 Dragon's Dogma: Dark Arisen
-The First Templar - Special Edition
+The First Templar
 Iron Danger
 The Long Journey Home
 Milo and the Christmas Gift
@@ -209,10 +207,10 @@ Saturnalia
 Severed Steel
 Soulstice
 Submerged Hidden Depths
-The Dungeon of Naheulbeuk: The Amulet of Chaos
+The Dungeon of Naheulbeuk
 The Elder Scrolls Online
 The Last Stand: Aftermath
-The Outer Worlds: Spacer's Choice Edition
+The Outer Worlds
 The Spirit and the Mouse
 theHunter: Call of the Wild
 Thief
