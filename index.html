@@ -315,11 +315,11 @@
     const spinBtn = document.getElementById('spin-btn');
     spinBtn.disabled = true;
 
-    // 2. Load games.txt, then enable SPIN
+    // 2) Fetch games.txt → fill pool → enable button
     fetch('games.txt')
-      .then(r => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.text();
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.text();
       })
       .then(txt => {
         gamePool = txt.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
@@ -327,11 +327,11 @@
         spinBtn.disabled = false;
       })
       .catch(err => {
-        console.error('❌ could not load games.txt', err);
+        console.error('❌ failed to load games.txt', err);
         spinBtn.disabled = false;
       });
 
-    // 3. Helper to build one reel's scrolling content
+    // 3) Build one reel’s scrolling content
     function createScrollContent(name) {
       const block = document.createElement('div');
       block.className = 'reel-content';
@@ -361,7 +361,7 @@
       return block;
     }
 
-    // 4. Sound helper (unchanged)
+    // 4) Sound helper (unchanged)
     function playSound(id, clone) {
       try {
         const el = document.getElementById(id);
@@ -378,13 +378,13 @@
 
     const reels = ['reel1', 'reel2', 'reel3'];
 
-    // 5. Main spin logic
+    // 5) Main spin logic
     function pullHandle() {
       spinBtn.disabled = true;
       spinBtn.style.filter = 'brightness(0.83)';
       playSound('reel-audio');
 
-      // A) pick winner first
+      // A) pick a winner
       const winner = gamePool[Math.floor(Math.random() * gamePool.length)];
 
       // B) pick two distinct others
@@ -393,24 +393,25 @@
         .sort(() => Math.random() - 0.5)
         .slice(0, 2);
 
-      // C) force center reel = winner
+      // C) center reel = winner
       const picks = [others[0], winner, others[1]];
       console.log('🔀 picks:', picks, '🏆 winner:', winner);
 
-      // D) animate each reel
+      // D) animate reels
       picks.forEach((name, i) => {
         const reel = document.getElementById(reels[i]);
         reel.innerHTML = '';
 
         const content = createScrollContent(name);
-        console.assert(content instanceof Node, 'content must be Node', content);
+        console.assert(content instanceof Node,
+          '⚠️ createScrollContent must return a DOM Node', content);
 
         reel.appendChild(content);
         content.style.animation =
           `scroll 2s cubic-bezier(.35,.12,.49,1.17) ${i * 0.5}s forwards`;
       });
 
-      // E) after scroll + skulls, reveal winner
+      // E) skulls + reveal winner
       setTimeout(() => {
         reels.forEach((id, i) => {
           if (i !== 1) {
@@ -424,18 +425,17 @@
           playSound('winner-audio');
           document.getElementById('winner-name').innerText = winner;
           document.getElementById('winner-screen').style.display = 'flex';
-
           setTimeout(() => {
             document.getElementById('winner-screen').style.display = 'none';
             spinBtn.disabled = false;
             spinBtn.style.filter = 'brightness(1)';
-            reels.forEach(id => (document.getElementById(id).innerHTML = ''));
+            reels.forEach(id => document.getElementById(id).innerHTML = '');
           }, 5200);
         }, 1200);
       }, 4200);
     }
 
-    // 6. Attach click
+    // 6) Wire up the button
     spinBtn.addEventListener('click', pullHandle);
   </script>
 </body>
