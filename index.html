@@ -308,84 +308,135 @@
   <audio id="reel-audio" src="images/reel_spin.mp3"></audio>
   <audio id="skull-audio" src="images/skull_stamp.mp3"></audio>
   <audio id="winner-audio" src="images/winner_hit.mp3"></audio>
+
   <script>
-    // Marquee dots
-    (() => {
-      const marquee = document.getElementById('marquee');
-      const w = 644, h = 474, r = 16;
-      let dots = [];
-      for(let i=0;i<19;++i)
-        dots.push({x:20 + i*32, y:10});
-      for(let i=0;i<10;++i)
-        dots.push({x:w-22, y:32 + i*42});
-      for(let i=0;i<19;++i)
-        dots.push({x:w-36 - i*32, y:h-26});
-      for(let i=0;i<10;++i)
-        dots.push({x:8, y:h-54 - i*42});
-      marquee.innerHTML = dots.map((d, idx) =>
-        `<div class="marquee-dot" style="left:${d.x}px;top:${d.y}px;animation-delay:${(idx%8)*.18}s"></div>`
-      ).join('');
-    })();
+    // 1. Global state + button handle
+    let gamePool = [];
+    const spinBtn = document.getElementById('spin-btn');
+    spinBtn.disabled = true;
 
-let gamePool = [];
-  document.getElementById('spin-btn').disabled = true;
-  fetch("games.txt")
-    .then(res => res.text())
-    .then(txt => {
-      gamePool = txt.split('\n').map(g => g.trim()).filter(g => g);
-      document.getElementById('spin-btn').disabled = false;
-    })
-    .catch(err => console.error('Failed to load games:', err));
-
-  const reels = ["reel1", "reel2", "reel3"];
-  function playSound(id, clone) { /* … your existing code … */ }
-  function createScrollContent(name) { /* … your existing code … */ }
-
-  function pullHandle() {
-    const btn = document.getElementById("spin-btn");
-    btn.disabled = true; btn.style.filter = "brightness(0.83)";
-    playSound('reel-audio');
-
-    // A) Pick the winner up‐front
-    const winner = gamePool[Math.floor(Math.random() * gamePool.length)];
-
-    // B) Pick two other distinct names
-    const others = gamePool
-      .filter(g => g !== winner)
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 2);
-
-    // C) Force the center reel to be the real winner
-    const picks = [others[0], winner, others[1]];
-
-    // D) Animate all three reels
-    picks.forEach((name, i) => {
-      const reel = document.getElementById(reels[i]);
-      reel.innerHTML = "";
-      const content = createScrollContent(name);
-      reel.appendChild(content);
-      content.style.animation = `scroll 2s cubic-bezier(.35,.12,.49,1.17) ${i * 0.5}s forwards`;
-    });
-
-    // E) After scroll + skulls, reveal the SAME winner
-    setTimeout(() => {
-      reels.forEach((id,i) => {
-        if (i!==1) {
-          setTimeout(() => playSound('skull-audio',true), i*200+10);
-          const skull = document.createElement("div"); skull.className="skull";
-          document.getElementById(id).appendChild(skull);
-        }
+    // 2. Load games.txt, then enable SPIN
+    fetch('games.txt')
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.text();
+      })
+      .then(txt => {
+        gamePool = txt.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+        console.log('✅ games loaded:', gamePool);
+        spinBtn.disabled = false;
+      })
+      .catch(err => {
+        console.error('❌ could not load games.txt', err);
+        spinBtn.disabled = false;
       });
-      setTimeout(()=>{
-        playSound('winner-audio');
-        document.getElementById("winner-name").innerText = winner;
-        document.getElementById("winner-screen").style.display = "flex";
-        setTimeout(()=>{
-          document.getElementById("winner-screen").style.display = "none";
-          btn.disabled = false; btn.style.filter = "brightness(1)";
-          reels.forEach(id => document.getElementById(id).innerHTML = "");
-        },5200);
-      },1200);
-    },4200);
-  }
-</script>
+
+    // 3. Helper to build one reel's scrolling content
+    function createScrollContent(name) {
+      const block = document.createElement('div');
+      block.className = 'reel-content';
+
+      for (let i = 0; i < 8; i++) {
+        const line = document.createElement('div');
+        Object.assign(line.style, {
+          height: '98px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        });
+        line.innerText = gamePool[Math.floor(Math.random() * gamePool.length)];
+        block.appendChild(line);
+      }
+
+      const final = document.createElement('div');
+      Object.assign(final.style, {
+        height: '98px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      });
+      final.innerText = name;
+      block.appendChild(final);
+
+      return block;
+    }
+
+    // 4. Sound helper (unchanged)
+    function playSound(id, clone) {
+      try {
+        const el = document.getElementById(id);
+        if (clone) {
+          const c = el.cloneNode();
+          c.volume = el.volume;
+          c.play();
+        } else {
+          el.currentTime = 0;
+          el.play();
+        }
+      } catch {}
+    }
+
+    const reels = ['reel1', 'reel2', 'reel3'];
+
+    // 5. Main spin logic
+    function pullHandle() {
+      spinBtn.disabled = true;
+      spinBtn.style.filter = 'brightness(0.83)';
+      playSound('reel-audio');
+
+      // A) pick winner first
+      const winner = gamePool[Math.floor(Math.random() * gamePool.length)];
+
+      // B) pick two distinct others
+      const others = gamePool
+        .filter(g => g !== winner)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 2);
+
+      // C) force center reel = winner
+      const picks = [others[0], winner, others[1]];
+      console.log('🔀 picks:', picks, '🏆 winner:', winner);
+
+      // D) animate each reel
+      picks.forEach((name, i) => {
+        const reel = document.getElementById(reels[i]);
+        reel.innerHTML = '';
+
+        const content = createScrollContent(name);
+        console.assert(content instanceof Node, 'content must be Node', content);
+
+        reel.appendChild(content);
+        content.style.animation =
+          `scroll 2s cubic-bezier(.35,.12,.49,1.17) ${i * 0.5}s forwards`;
+      });
+
+      // E) after scroll + skulls, reveal winner
+      setTimeout(() => {
+        reels.forEach((id, i) => {
+          if (i !== 1) {
+            setTimeout(() => playSound('skull-audio', true), i * 200 + 10);
+            const skull = document.createElement('div');
+            skull.className = 'skull';
+            document.getElementById(id).appendChild(skull);
+          }
+        });
+        setTimeout(() => {
+          playSound('winner-audio');
+          document.getElementById('winner-name').innerText = winner;
+          document.getElementById('winner-screen').style.display = 'flex';
+
+          setTimeout(() => {
+            document.getElementById('winner-screen').style.display = 'none';
+            spinBtn.disabled = false;
+            spinBtn.style.filter = 'brightness(1)';
+            reels.forEach(id => (document.getElementById(id).innerHTML = ''));
+          }, 5200);
+        }, 1200);
+      }, 4200);
+    }
+
+    // 6. Attach click
+    spinBtn.addEventListener('click', pullHandle);
+  </script>
+</body>
+</html>
